@@ -31,6 +31,12 @@ The following guides illustrate how to use some features concretely:
 * GET: http://localhost:8080/packages
 * GET:  http://localhost:8080/packages/CC
 * POST: http://localhost:8080/tours/{tourId}/ratings/
+* GET: http://localhost:8080/tours/1/ratings/average
+* POST: http://localhost:8080/tours/1/ratings
+* GET: http://localhost:8080/tours/1/ratings?size=2&page=1&sort=score,desc
+* Get all tour ratings for tour 3 sorted by the customer identifier number, lowest to highest:http://localhost:8080/tours/3/ratings?sort=pk.customerId,asc
+* Get all tour ratings for tour 3 sorted by the comment in alphabetical order: http://localhost:8080/tours/3/ratings?sort=comment,asc
+*
 
 ### Controlling API Exposure
 * @RepositoryRestResource(exported=false) Class annotation
