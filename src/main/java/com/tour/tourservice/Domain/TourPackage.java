@@ -3,22 +3,18 @@ package com.tour.tourservice.Domain;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.Objects;
 
-@Entity
+@Document
 public class TourPackage {
 
     @Id
     private String code;
 
-    @Column
     private String name;
 
     protected TourPackage() {

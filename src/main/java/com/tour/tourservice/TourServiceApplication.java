@@ -1,7 +1,5 @@
 package com.tour.tourservice;
 
-import com.tour.tourservice.Domain.Difficulty;
-import com.tour.tourservice.Domain.Region;
 import com.tour.tourservice.service.TourPackageService;
 import com.tour.tourservice.service.TourService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,12 +10,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.io.IOException;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.ANY;
 import static com.fasterxml.jackson.annotation.PropertyAccessor.FIELD;
@@ -62,16 +59,24 @@ public class TourServiceApplication implements CommandLineRunner {
     private void createTours(String fileToImport) throws IOException{
 
         TourFromFile.read(fileToImport).forEach(t -> tourService.createTour(
-                t.title, t.description, t.blurb,
-                Integer.parseInt(t.price), t.length, t.bullets, t.keywords,
-                t.packageType,
-                Difficulty.valueOf(t.difficulty), Region.findByLabel(t.region)
-        ));    }
+               t.getTitle(),t.getPackageName(),t.getDetails()
+        ));
+    }
 
     private static class TourFromFile {
         //attributes as listed in the .json file
-        private String packageType, title, description, blurb, price, length, bullets, keywords,  difficulty, region;
+//        private String packageType, title, description, blurb, price, length, bullets, keywords,  difficulty, region;
+        String title;
+        String packageName;
+        Map<String,String> details;
 
+        TourFromFile(Map<String,String> record){
+            this.title = record.get("title");
+            this.packageName = record.get("packageType");
+            this.details = record;
+            this.details.remove("packageType");
+            this.details.remove("title");
+        }
         /**
          * Open the ExploreCalifornia.json, unmarshal every entry into a TourFromFile Object.
          *
@@ -79,9 +84,24 @@ public class TourServiceApplication implements CommandLineRunner {
          * @throws IOException if ObjectMapper unable to open file.
          */
         static List<TourFromFile> read(String fileToImport) throws IOException {
-            return new ObjectMapper().setVisibility(FIELD, ANY).
-                    readValue(new FileInputStream(fileToImport),
-                            new TypeReference<List<TourFromFile>>(){});
+//            return new ObjectMapper().setVisibility(FIELD, ANY).
+//                    readValue(new FileInputStream(fileToImport),
+//                            new TypeReference<List<TourFromFile>>(){});
+            List<Map<String,String>> records = new ObjectMapper().setVisibility(FIELD,ANY)
+                    .readValue(new FileInputStream(fileToImport), new TypeReference<List<Map<String, String>>>() {
+                    });
+            return records.stream().map(TourFromFile::new).collect(Collectors.toList());
+        }
+
+        public String getTitle() {
+            return title;
+        }
+
+        public Map<String, String> getDetails() {
+            return details;
+        }
+        public String getPackageName() {
+            return packageName;
         }
 
 

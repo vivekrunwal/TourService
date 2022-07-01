@@ -1,26 +1,37 @@
 package com.tour.tourservice.Domain;
 
-import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
 
-@Entity
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
+@Document
 public class TourRating {
 
-    @EmbeddedId
-    private TourRatingPk pk;
+    @Id
+    private String Id;
 
-    @Column(nullable = false)
+
+    private String tourId;
+
+    @NotNull
+    private Integer customerId;
+
+    @Min(0)
+    @Max(5)
     private Integer score;
 
-    @Column
+    @Size(max=255)
     private String comment;
 
-    public TourRating(TourRatingPk pk, Integer score, String comment) {
-        this.pk = pk;
-        this.score = score;
-        this.comment = comment;
-    }
+//    public TourRating(Integer score, String comment) {
+//        this.score = score;
+//        this.comment = comment;
+//    }
 
     public TourRating() {
 
@@ -31,12 +42,15 @@ public class TourRating {
 //    }
 
 
-    public TourRatingPk getPk() {
-        return pk;
+    public TourRating(String tourId, Integer customerId, Integer score, String comment) {
+        this.tourId = tourId;
+        this.customerId = customerId;
+        this.score = score;
+        this.comment = comment;
     }
 
-    public void setPk(TourRatingPk pk) {
-        this.pk = pk;
+    public Integer getCustomerId() {
+        return customerId;
     }
 
     public Integer getScore() {
