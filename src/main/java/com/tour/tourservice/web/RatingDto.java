@@ -30,8 +30,9 @@ public class RatingDto {
     public RatingDto(TourRating tourRating) {
             this.score = tourRating.getScore();
             this.comment = tourRating.getComment();
-//            this.customerId= tourRating.getPk() ;
+            this.customerId = tourRating.getPk().customerId;
     }
+
 
     public Integer getScore() {
         return score;

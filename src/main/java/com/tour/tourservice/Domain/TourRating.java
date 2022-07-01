@@ -26,6 +26,11 @@ public class TourRating {
 
     }
 
+//    public TourRatingPk getCustomerId(){
+//        return pk.get
+//    }
+
+
     public TourRatingPk getPk() {
         return pk;
     }

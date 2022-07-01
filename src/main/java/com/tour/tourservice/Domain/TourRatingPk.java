@@ -13,7 +13,7 @@ public class TourRatingPk implements Serializable {
     private Tour tour;
 
     @Column(insertable = false,updatable = false,nullable = false)
-    private Integer customerId;
+    public Integer customerId;
 
     public TourRatingPk(){
 

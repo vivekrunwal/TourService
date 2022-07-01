@@ -35,7 +35,6 @@ public class TourRatingController {
 
     }
 
-
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public void createTourRating(@PathVariable(value = "tourId" ) int tourId,@RequestBody @Validated RatingDto ratingDto){
